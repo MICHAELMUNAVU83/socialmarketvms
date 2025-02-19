@@ -10,14 +10,15 @@
 <.table
   id="default_categories"
   rows={@streams.default_categories}
-  row_click={fn {_id, default_category} -> JS.navigate(~p"/default_categories/#{default_category}") end}
+  row_click={
+    fn {_id, default_category} -> JS.navigate(~p"/default_categories/#{default_category}") end
+  }
 >
   <:col :let={{_id, default_category}} label="Name">{default_category.name}</:col>
-  <:col :let={{_id, default_category}} label="Description">{default_category.description}</:col>
   <:col :let={{_id, default_category}} label="Price">{default_category.price}</:col>
-  <:col :let={{_id, default_category}} label="Image">{default_category.image}</:col>
-  <:col :let={{_id, default_category}} label="Units available">{default_category.units_available}</:col>
-  <:col :let={{_id, default_category}} label="Amenities">{default_category.amenities}</:col>
+  <:col :let={{_id, default_category}} label="Units available">
+    {default_category.units_available}
+  </:col>
   <:action :let={{_id, default_category}}>
     <div class="sr-only">
       <.link navigate={~p"/default_categories/#{default_category}"}>Show</.link>
@@ -34,7 +35,12 @@
   </:action>
 </.table>
 
-<.modal :if={@live_action in [:new, :edit]} id="default_category-modal" show on_cancel={JS.patch(~p"/default_categories")}>
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="default_category-modal"
+  show
+  on_cancel={JS.patch(~p"/default_categories")}
+>
   <.live_component
     module={SocialmarketvmsWeb.DefaultCategoryLive.FormComponent}
     id={@default_category.id || :new}

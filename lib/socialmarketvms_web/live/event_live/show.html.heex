@@ -1,6 +1,6 @@
+<.back navigate={~p"/events"}>Back to events</.back>
 <.header>
   Event {@event.id}
-  <:subtitle>This is a event record from your database.</:subtitle>
   <:actions>
     <.link patch={~p"/events/#{@event}/show/edit"} phx-click={JS.push_focus()}>
       <.button>Edit event</.button>
@@ -16,9 +16,12 @@
   <:item title="Location">{@event.location}</:item>
 </.list>
 
-<.back navigate={~p"/events"}>Back to events</.back>
-
-<.modal :if={@live_action == :edit} id="event-modal" show on_cancel={JS.patch(~p"/events/#{@event}")}>
+<.modal
+  :if={@live_action == :edit}
+  id="event-modal"
+  show
+  on_cancel={JS.patch(~p"/events/#{@event}")}
+>
   <.live_component
     module={SocialmarketvmsWeb.EventLive.FormComponent}
     id={@event.id}
