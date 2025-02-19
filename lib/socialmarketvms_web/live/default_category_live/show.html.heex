@@ -1,0 +1,31 @@
+<.header>
+  Default category {@default_category.id}
+  <:subtitle>This is a default_category record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/default_categories/#{@default_category}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit default_category</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name">{@default_category.name}</:item>
+  <:item title="Description">{@default_category.description}</:item>
+  <:item title="Price">{@default_category.price}</:item>
+  <:item title="Image">{@default_category.image}</:item>
+  <:item title="Units available">{@default_category.units_available}</:item>
+  <:item title="Amenities">{@default_category.amenities}</:item>
+</.list>
+
+<.back navigate={~p"/default_categories"}>Back to default_categories</.back>
+
+<.modal :if={@live_action == :edit} id="default_category-modal" show on_cancel={JS.patch(~p"/default_categories/#{@default_category}")}>
+  <.live_component
+    module={SocialmarketvmsWeb.DefaultCategoryLive.FormComponent}
+    id={@default_category.id}
+    title={@page_title}
+    action={@live_action}
+    default_category={@default_category}
+    patch={~p"/default_categories/#{@default_category}"}
+  />
+</.modal>

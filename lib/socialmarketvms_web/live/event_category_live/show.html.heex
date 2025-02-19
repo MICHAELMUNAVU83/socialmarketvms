@@ -1,0 +1,31 @@
+<.header>
+  Event category {@event_category.id}
+  <:subtitle>This is a event_category record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/event_categories/#{@event_category}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit event_category</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name">{@event_category.name}</:item>
+  <:item title="Description">{@event_category.description}</:item>
+  <:item title="Price">{@event_category.price}</:item>
+  <:item title="Image">{@event_category.image}</:item>
+  <:item title="Units available">{@event_category.units_available}</:item>
+  <:item title="Amenities">{@event_category.amenities}</:item>
+</.list>
+
+<.back navigate={~p"/event_categories"}>Back to event_categories</.back>
+
+<.modal :if={@live_action == :edit} id="event_category-modal" show on_cancel={JS.patch(~p"/event_categories/#{@event_category}")}>
+  <.live_component
+    module={SocialmarketvmsWeb.EventCategoryLive.FormComponent}
+    id={@event_category.id}
+    title={@page_title}
+    action={@live_action}
+    event_category={@event_category}
+    patch={~p"/event_categories/#{@event_category}"}
+  />
+</.modal>

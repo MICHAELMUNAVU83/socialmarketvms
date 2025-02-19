@@ -1,0 +1,46 @@
+<.header>
+  Listing Event categories
+  <:actions>
+    <.link patch={~p"/event_categories/new"}>
+      <.button>New Event category</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="event_categories"
+  rows={@streams.event_categories}
+  row_click={fn {_id, event_category} -> JS.navigate(~p"/event_categories/#{event_category}") end}
+>
+  <:col :let={{_id, event_category}} label="Name">{event_category.name}</:col>
+  <:col :let={{_id, event_category}} label="Description">{event_category.description}</:col>
+  <:col :let={{_id, event_category}} label="Price">{event_category.price}</:col>
+  <:col :let={{_id, event_category}} label="Image">{event_category.image}</:col>
+  <:col :let={{_id, event_category}} label="Units available">{event_category.units_available}</:col>
+  <:col :let={{_id, event_category}} label="Amenities">{event_category.amenities}</:col>
+  <:action :let={{_id, event_category}}>
+    <div class="sr-only">
+      <.link navigate={~p"/event_categories/#{event_category}"}>Show</.link>
+    </div>
+    <.link patch={~p"/event_categories/#{event_category}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, event_category}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: event_category.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="event_category-modal" show on_cancel={JS.patch(~p"/event_categories")}>
+  <.live_component
+    module={SocialmarketvmsWeb.EventCategoryLive.FormComponent}
+    id={@event_category.id || :new}
+    title={@page_title}
+    action={@live_action}
+    event_category={@event_category}
+    patch={~p"/event_categories"}
+  />
+</.modal>
